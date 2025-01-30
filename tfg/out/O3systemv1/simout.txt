@@ -1,0 +1,10 @@
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 24.0.0.1
+gem5 compiled Oct 29 2024 16:19:44
+gem5 started Jan 30 2025 13:49:47
+gem5 executing on duvin, pid 41140
+command line: build/X86/gem5.opt -re --outdir=tfg/out/O3systemv1 tfg/configs/configO3system.py
+
+info: Using default config

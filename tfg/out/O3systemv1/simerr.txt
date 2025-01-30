@@ -1,0 +1,10 @@
+TypeError: create(): incompatible function arguments. The following argument types are supported:
+    1. (arg0: str) -> _m5.object_file.ObjectFile
+
+Invoked with: <gem5.resources.resource.WorkloadResource object at 0x7f2f249e4fd0>
+
+At:
+  src/sim/Workload.py(149): find_compatible
+  src/sim/Workload.py(169): init_compatible
+  tfg/configs/configO3system.py(49): <module>
+  src/python/m5/main.py(669): main

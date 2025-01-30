@@ -1,0 +1,47 @@
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 24.0.0.1
+gem5 compiled Oct 29 2024 16:19:44
+gem5 started Jan 30 2025 13:33:25
+gem5 executing on duvin, pid 37525
+command line: build/X86/gem5.opt -re --outdir=tfg/out/O3boardv1 tfg/configs/configO3board.py
+
+info: Using default config
+Empezando simulacion!
+Global frequency set at 1000000000000 ticks per second
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER) - IS Benchmark
+
+ Size:  65536  (class S)
+ Iterations:   10
+
+
+ IS Benchmark Completed
+ Class           =                        S
+ Size            =                    65536
+ Iterations      =                       10
+ Time in seconds =                     0.00
+ Mop/s total     =                   225.36
+ Operation type  =              keys ranked
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              13 Feb 2024
+
+ Compile options:
+    CC           = gcc
+    CLINK        = $(CC)
+    C_LIB        = (none)
+    C_INC        = (none)
+    CFLAGS       = -O3 -mcmodel=medium 
+    CLINKFLAGS   = -O3 -mcmodel=medium -static
+
+
+ Please send all errors/feedbacks to:
+
+ NPB Development Team
+ npb@nas.nasa.gov
+
+
+Terminada la simulacion!
