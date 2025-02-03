@@ -43,3 +43,4 @@ class O3Processor(BaseCPUProcessor):
     def __init__(self, frontend_width, backend_width, rob_size, iq_size, lsq_size, num_int_phys_regs, num_fp_phys_regs):
         cores = [O3StdCore(frontend_width, backend_width, rob_size, iq_size, lsq_size, num_int_phys_regs, num_fp_phys_regs)]
         super().__init__(cores)
+        

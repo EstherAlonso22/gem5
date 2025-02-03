@@ -1,7 +1,9 @@
 # Importa la libreria y todos los SimObjects
+# TODO: Juntar esto con el basic 
 import m5
 from m5.objects import *
 from components.customO3CPU import *
+from components.customCaches import *
 from gem5.resources.resource import obtain_resource
 
 # Creo el sistema
@@ -23,35 +25,38 @@ system.clk_domain = SrcClockDomain()
 system.clk_domain.clock = "3GHz"
 system.clk_domain.voltage_domain = VoltageDomain()
 
-# Memoria TODO: cambiar por custom
-system.mem_ctrl = DDR4_2400_8x8()
-system.mem_ctrl.range = AddrRange("2GB")
+# Crea la jeraquia de caches y las conecta
+system.cpu.l1d = L1DCache()
+system.cpu.l1i = L1ICache()
+system.l1_to_l2 = L2XBar()
+system.l2cache = L2Cache()
+system.membus = SystemXBar()
+system.cpu.l1d.connectCPU(system.cpu.cores[0].core)
+system.cpu.l1d.connectBus(system.l1_to_l2)
+system.cpu.l1i.connectCPU(system.cpu.cores[0].core)
+system.cpu.l1i.connectBus(system.l1_to_l2)
+system.l2cache.connectCPUSideBus(system.l1_to_l2)
+system.l2cache.connectMemSideBus(system.membus)
 
-# Caches TODO: cambiar por custom
-system.cpu.icache = Cache(
-    size="32kB",
-    assoc=8,
-)
-system.cpu.dcache = Cache(
-    size="32kB",
-    assoc=8,
-)
-system.cpu.l2cache = Cache(
-    size="1MB",
-    assoc=16,
-)
 
-# Conectar caches
-# TODO: Buscar como 
+system.system_port = system.membus.cpu_side_ports
+
+# Crea el controlador de memoria y lo conecta al bus de memoria
+system.mem_ctrl = MemCtrl()
+system.mem_ctrl.dram = DDR4_2400_8x8()
+#TODO: system.mem_ctrl.dram.num_channels = 2
+#system.mem_ctrl.dram.size = "2GB"
+#system.mem_ctrl.port = system.membus.mem_side_ports
+#system.system_port = system.membus.cpu_side_ports
 
 # Asigna el proceso a ejecutar
 workload = obtain_resource("x86-npb-is-size-s-run")
-system.workload = SEWorkload.init_compatible(workload)
+#system.workload = SEWorkload.init_compatible(workload)
 
 process = Process()
 process.cmd = [workload]
-system.cpu.workload = process
-system.cpu.createThreads()
+system.cpu.cores[0].core.workload = process
+system.cpu.cores[0].core.createThreads()
 
 # Instancia el sistema y comienza la ejecucion
 root = Root(full_system=False, system=system)

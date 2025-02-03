@@ -1,11 +1,11 @@
 from gem5.components.boards.simple_board import SimpleBoard
-from gem5.components.memory.single_channel import SingleChannelDDR4_2400
 from gem5.components.cachehierarchies.classic.private_l1_shared_l2_cache_hierarchy import (
     PrivateL1SharedL2CacheHierarchy,
 )
 from gem5.resources.resource import obtain_resource
 from gem5.simulate.simulator import Simulator
 from components.customO3CPU import *
+from m5.objects import DDR4_2400_8x8
 
 # Crea el procesador O3
 ooo_processor = O3Processor (
@@ -29,7 +29,11 @@ caches = PrivateL1SharedL2CacheHierarchy(
 )
 
 #TODO: cambiar por custom
-main_memory = SingleChannelDDR4_2400(size="2GB")
+main_memory = ChanneledMemory(
+    dram_interface_class=DDR4_2400_8x8,
+    num_channels=2,
+    size="1 GiB",
+)
 
 # Creo la placa TODO: revisar si usar SimpleBoard o X86Board
 board = SimpleBoard(
@@ -40,8 +44,12 @@ board = SimpleBoard(
 )
 
 # Asigno programa a ejecutar y lanzo la simulacion
-workload = obtain_resource("x86-npb-is-size-s-run")
-board.set_workload(workload=workload)
+binary_path = "ansibench/coremark/bin/coremark"
+board.set_se_binary_workload(
+    binary = BinaryResource(
+        local_path=binary_path.as_posix()
+    )
+)
 simulator = Simulator(board=board, full_system=False)
 print("Empezando simulacion!")
 simulator.run()
